@@ -5,6 +5,8 @@ const pi = Math.PI;
 let sound, amplitude, fft, spectrum;
 let mbShader;
 
+let level = 0;
+
 // p5 sound preload
 function preload() {
     // PRELOAD BACKGROUND SHADERS
@@ -30,28 +32,31 @@ function setup() {
     // START THREE.JS ANIMATION
     animate();
 }
-let zoom = 1;
+let zoom = 100;
 let dtc = 0;
 
 let off = [0, 0];
-
+let initX = Math.random() * 2 * pi;
 
 function draw() {
     dtc += deltaTime;
 
 
-    let zval = Math.pow(0.01, 1/zoom);
-    zval = (0.001*deltaTime) / Math.pow(zoom, zoom*0.01);
-    if (keyIsDown(LEFT_ARROW)) {
-        off[0] -= zval;
-    } else if (keyIsDown(RIGHT_ARROW)) {
-        off[0] += zval;
-    }
-    if (keyIsDown(UP_ARROW)) {
-        off[1] -= zval;
-    } else if (keyIsDown(DOWN_ARROW)) {
-        off[1] += zval;
-    }
+    zoom = 100 + 75*sin(dtc*0.0001);
+
+    let zval = Math.pow(0.0025, 1/(zoom*zoom));
+    let zval2 = Math.pow(0.01, 1/(zoom));
+    // zval = (0.001*deltaTime) / Math.pow(zoom, zoom*0.01);
+    // if (keyIsDown(LEFT_ARROW)) {
+    //     off[0] -= zval;
+    // } else if (keyIsDown(RIGHT_ARROW)) {
+    //     off[0] += zval;
+    // }
+    // if (keyIsDown(UP_ARROW)) {
+    //     off[1] -= zval;
+    // } else if (keyIsDown(DOWN_ARROW)) {
+    //     off[1] += zval;
+    // }
 
     //zoom = 100*-cos(dtc*0.003) + 101;
     //zoom = 200-(40*sin(dtc*0.0001)+40);
@@ -60,12 +65,24 @@ function draw() {
     //off[1] += Math.sign(cos(dtc * 0.1))*0.1;
 
     // shader() sets the active shader with our shader
+    let circCentre = [-1, 0];
+    let circRadius = 0.25 + (0.0001 + 0.0001*cos(dtc*0.000079)) + 0.00001;
+    let angle = 4.5*pi/4 + dtc * (1/zoom) * 0.0001;
+    // off = [
+    //     circCentre[0] + circRadius * sin(angle),
+    //     circCentre[1] + circRadius * cos(angle)
+    // ];
+    off = [
+        -1.7 + 0.125 + 0.2*sin(dtc * (1/zoom) * 0.001 + initX),
+        0.00001*sin(dtc * 0.0001)
+    ];
 
     mbShader.setUniform("u_resolution", [width, height]);
     mbShader.setUniform("u_offset", off);
     mbShader.setUniform("u_mouse", [mouseX, map(mouseY, 0, height, height, 0)]);
     mbShader.setUniform("u_zoom", zoom);
     mbShader.setUniform("u_iter", 100);
+    mbShader.setUniform("u_level", level);
 
     shader(mbShader);
 
@@ -88,19 +105,20 @@ function windowResized(){
 }
 
 function mouseClicked() {
-    console.log(off);
+    console.log("COORD: " + off);
+    console.log("ZOOM: " + zoom);
 }
 
-function mouseWheel(event) {
-    //print(event.delta);
-    //move the square according to the vertical scroll amount
-
-    zoom -= event.delta;
-    if (zoom < 1) zoom = 1;
-    // //uncomment to block page scrolling
-    // //return false;
-    // console.log(zoom);
-}
+// function mouseWheel(event) {
+//     //print(event.delta);
+//     //move the square according to the vertical scroll amount
+//
+//     zoom -= event.delta;
+//     if (zoom < 1) zoom = 1;
+//     // //uncomment to block page scrolling
+//     // //return false;
+//     // console.log(zoom);
+// }
 
 function rgb(r, g, b) {
     return "rgb(" + (r%256) + ", " + (g%256) + ", " + (b%256) + ")";
@@ -221,7 +239,7 @@ var clock = new THREE.Clock();
 let levelSamples = [];
 const SAMPLE_BUFFER = 1000; // Buffer size, the bigger the more accurate the normalisation is
 
-let level = 0;
+
 let loudest = 0;
 let quietest = 1;
 let normalisationBoost = 0;

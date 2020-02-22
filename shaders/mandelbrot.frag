@@ -7,6 +7,7 @@ uniform vec2 u_mouse; // This is passed in as a uniform from the sketch.js file
 uniform vec2 u_offset; // This is passed in as a uniform from the sketch.js file
 uniform float u_zoom; // This is passed in as a uniform from the sketch.js file
 uniform int u_iter; // This is passed in as a uniform from the sketch.js file
+uniform float u_level; // This is passed in as a uniform from the sketch.js file
 
 float zoom = 1.0;
 const float scrZoom = 1.0;
@@ -65,7 +66,7 @@ int Mandelbrot(vec2 coor, vec2 zOld) {
 
   vec2 z0 = zOld;
 
-const int citer = 500;
+const int citer = 100;
 
   for (int i = 0; i < checkingIterations; i++) {
     vec2 zOldSquared = squareVec(z0);
@@ -100,9 +101,9 @@ void main() {
 
     float mandelColor = float(iterations) / float(checkingIterations);
 
-    float opacity = 0.4;
+    float opacity = u_level;
 
-    vec4 pcolor = vec4(pow(mandelColor, 0.5),0.05,pow(mandelColor, 0.5)*0.5,opacity);
+    vec4 pcolor = vec4(pow(mandelColor, 0.5),pow(u_level, 1.2),pow(mandelColor, 0.5)*0.5,opacity);
 
     if (iterations == checkingIterations) pcolor = vec4(0.0, 0.0, 0.0, opacity);
 
