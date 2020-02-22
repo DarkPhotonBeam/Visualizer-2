@@ -1,0 +1,70 @@
+#songBrowser {
+  padding: 5em; }
+
+.album > .song:last-child {
+  margin-bottom: 2em; }
+
+.albumCover {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto; }
+
+.albumCover img {
+  width: 20em; }
+
+.albumTitle {
+  font-size: 3em;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto; }
+
+.song {
+  transition: color 250ms ease-in-out;
+  -webkit-transition: color 250ms ease-in-out;
+  -moz-transition: color 250ms ease-in-out;
+  transition: background 250ms ease-in-out;
+  -webkit-transition: background 250ms ease-in-out;
+  -moz-transition: background 250ms ease-in-out;
+  font-size: 1.5em;
+  padding: 0.5em 0 0.5em 1em;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto; }
+
+.song > div {
+  width: 50%; }
+
+.feature {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 0.5em; }
+
+.song > div .feature:first-child {
+  padding-left: 1.5em; }
+
+.pubYear {
+  color: rgba(255, 255, 255, 0.25);
+  padding: 0 0.5em 0 1.5em;
+  font-size: 0.4em; }
+
+.duration {
+  float: right;
+  color: rgba(255, 255, 255, 0.5); }
+
+.trackNum {
+  color: rgba(255, 255, 255, 0.25);
+  padding-right: 1.0em; }
+
+.song:hover {
+  transition: color 250ms ease-in-out;
+  -webkit-transition: color 250ms ease-in-out;
+  -moz-transition: color 250ms ease-in-out;
+  transition: background 250ms ease-in-out;
+  -webkit-transition: background 250ms ease-in-out;
+  -moz-transition: background 250ms ease-in-out;
+  color: #fff;
+  background: #222;
+  cursor: pointer; }
+
+/*# sourceMappingURL=style.css.map */

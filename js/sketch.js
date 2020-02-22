@@ -3,10 +3,16 @@
 const pi = Math.PI;
 
 let sound, amplitude, fft, spectrum;
+let mbShader;
 
 // p5 sound preload
 function preload() {
-    sound = loadSound('https://dev.darkphotonbeam.com/audio/bruhEP/resurrected.mp3');
+    // PRELOAD BACKGROUND SHADERS
+    mbShader = loadShader('https://dev.darkphotonbeam.com/projects/visualizer2/shaders/mandelbrot.vert', "https://dev.darkphotonbeam.com/projects/visualizer2/shaders/mandelbrot.frag");
+
+    let val = document.getElementById("songData").innerText;
+    let url = 'https://dev.darkphotonbeam.com/'+val;
+    sound = loadSound(url);
 }
 
 // p5 setup
@@ -16,12 +22,84 @@ function setup() {
     sound.play();
     amplitude = new p5.Amplitude();
     fft = new p5.FFT();
+    createCanvas(window.innerWidth, window.innerHeight, WEBGL);
     console.log("p5 SETUP");
 
-
+    noStroke();
 
     // START THREE.JS ANIMATION
     animate();
+}
+let zoom = 1;
+let dtc = 0;
+
+let off = [0, 0];
+
+
+function draw() {
+    dtc += deltaTime;
+
+
+    let zval = Math.pow(0.01, 1/zoom);
+    zval = (0.001*deltaTime) / Math.pow(zoom, zoom*0.01);
+    if (keyIsDown(LEFT_ARROW)) {
+        off[0] -= zval;
+    } else if (keyIsDown(RIGHT_ARROW)) {
+        off[0] += zval;
+    }
+    if (keyIsDown(UP_ARROW)) {
+        off[1] -= zval;
+    } else if (keyIsDown(DOWN_ARROW)) {
+        off[1] += zval;
+    }
+
+    //zoom = 100*-cos(dtc*0.003) + 101;
+    //zoom = 200-(40*sin(dtc*0.0001)+40);
+    //console.log(zoom);
+    //off[0] += Math.sign(sin(dtc * 0.1))*0.1;
+    //off[1] += Math.sign(cos(dtc * 0.1))*0.1;
+
+    // shader() sets the active shader with our shader
+
+    mbShader.setUniform("u_resolution", [width, height]);
+    mbShader.setUniform("u_offset", off);
+    mbShader.setUniform("u_mouse", [mouseX, map(mouseY, 0, height, height, 0)]);
+    mbShader.setUniform("u_zoom", zoom);
+    mbShader.setUniform("u_iter", 100);
+
+    shader(mbShader);
+
+    // rect gives us some geometry on the screen
+
+    rect(0,0,width,height);
+
+
+
+    // print out the framerate
+
+    //  print(frameRate());
+
+}
+
+function windowResized(){
+
+    resizeCanvas(windowWidth, windowHeight);
+
+}
+
+function mouseClicked() {
+    console.log(off);
+}
+
+function mouseWheel(event) {
+    //print(event.delta);
+    //move the square according to the vertical scroll amount
+
+    zoom -= event.delta;
+    if (zoom < 1) zoom = 1;
+    // //uncomment to block page scrolling
+    // //return false;
+    // console.log(zoom);
 }
 
 function rgb(r, g, b) {
@@ -48,9 +126,12 @@ let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera( FOV, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 let renderer = new THREE.WebGLRenderer({
-    antialias: true
+    antialias: true,
+    alpha: true
 });
 renderer.setSize( window.innerWidth, window.innerHeight );
+
+renderer.domElement.id = 'threejsCanvas';
 
 // Resize canvas on window resize
 window.addEventListener("resize", function() {
