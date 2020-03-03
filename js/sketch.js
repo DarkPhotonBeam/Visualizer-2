@@ -1,3 +1,8 @@
+/*
+    AUTHOR: Daniel Leuthold
+    LAST EDIT: 01.03.2020
+*/
+
 //import * as THREE from "./lib/threejs/three";
 
 const pi = Math.PI;
