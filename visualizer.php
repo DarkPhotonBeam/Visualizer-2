@@ -4,13 +4,26 @@
     <meta charset="utf-8">
     <title>Visualizer 2</title>
     <style>
-        body { padding: 0;margin: 0; width: 100%; height: 100%;background-color: #000;}
+        body { padding: 0;margin: 0; width: 100%; height: 100%;background-color: #000;overflow: hidden;}
         canvas { display: block; position: fixed; top:0; left: 0; }
         #threejscanvas {
             z-index: 1000;
         }
         .p5Canvas {
             z-index: -100;
+        }
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
         }
         /*#tint {*/
         /*    z-index: 0;*/
@@ -43,6 +56,11 @@
 
     ?>
 <!--    <div id="tint"></div>-->
+    <div id="loadingScreen">
+        <div>
+            <img src="img/load.gif" />
+        </div>
+    </div>
     <script src="js/lib/threejs/three.js"></script>
     <script src="js/sketch.js"></script>
 </body>

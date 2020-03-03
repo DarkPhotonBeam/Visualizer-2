@@ -26,6 +26,7 @@ function setup() {
     fft = new p5.FFT();
     createCanvas(window.innerWidth, window.innerHeight, WEBGL);
     console.log("p5 SETUP");
+    document.getElementById("loadingScreen").style.display = "none";
 
     noStroke();
 
@@ -37,9 +38,22 @@ let dtc = 0;
 
 let off = [0, 0];
 let initX = Math.random() * 2 * pi;
+let p5c = 0;
 
 function draw() {
     dtc += deltaTime;
+    p5c += deltaTime;
+
+
+    // if (p5c > 1000) {
+    //     let step = 100;
+    //     for (let i = 0; i < width; i = i + step) {
+    //         let val = Math.floor(map(i, 0, width, 200, spectrum.length * 0.5));
+    //         rect(i, height, step, -spectrum[val]);
+    //     }
+    //     p5c = 0;
+    // }
+
 
 
     zoom = 100 + 75*sin(dtc*0.0001);
@@ -83,6 +97,7 @@ function draw() {
     mbShader.setUniform("u_zoom", zoom);
     mbShader.setUniform("u_iter", 100);
     mbShader.setUniform("u_level", level);
+    //mbShader.setUniform("u_spectrum", spectrum);
 
     shader(mbShader);
 
@@ -95,6 +110,13 @@ function draw() {
     // print out the framerate
 
     //  print(frameRate());
+
+    // for (let i = 200; i < spectrum.length*0.5; i++) {
+    //     let val = map(i, 200, spectrum.length * 0.5, 0, width);
+    //     rect(val, height, width/(spectrum.length*0.5 - 200), spectrum[i]);
+    // }
+
+
 
 }
 
@@ -282,7 +304,7 @@ const SPEC_MAX_FACT = 0.2;
 
 // Controls the spectrum amp
 const SPEC_SIDE_FACT = 10;
-const SPEC_AMP_FACT = 1;
+const SPEC_AMP_FACT = 1.25;
 
 let specFac;
 

@@ -8,6 +8,7 @@ uniform vec2 u_offset; // This is passed in as a uniform from the sketch.js file
 uniform float u_zoom; // This is passed in as a uniform from the sketch.js file
 uniform int u_iter; // This is passed in as a uniform from the sketch.js file
 uniform float u_level; // This is passed in as a uniform from the sketch.js file
+//uniform int u_spectrum[1024]; // This is passed in as a uniform from the sketch.js file
 
 float zoom = 1.0;
 const float scrZoom = 1.0;
@@ -90,6 +91,8 @@ void main() {
 
   // position of the pixel divided by resolution, to get normalized positions on the canvas
   vec2 st = gl_FragCoord.xy/u_resolution.xy;
+  //const int indd = int(st*1024.0);
+  //int spec = u_spectrum[500];
 
   vec2 mouseRat = u_mouse.xy / u_resolution.xy;
 
@@ -103,7 +106,7 @@ void main() {
 
     float opacity = u_level;
 
-    vec4 pcolor = vec4(pow(mandelColor, 0.5),pow(u_level, 1.2),pow(mandelColor, 0.5)*0.5,opacity);
+    vec4 pcolor = vec4(pow(mandelColor, 0.5),0.05,pow(mandelColor, 0.5)*0.5,opacity);
 
     if (iterations == checkingIterations) pcolor = vec4(0.0, 0.0, 0.0, opacity);
 
