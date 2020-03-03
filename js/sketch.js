@@ -1,6 +1,6 @@
 /*
     AUTHOR: Daniel Leuthold
-    LAST EDIT: 01.03.2020
+    LAST EDIT: 03.03.2020
 */
 
 //import * as THREE from "./lib/threejs/three";
